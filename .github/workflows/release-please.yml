@@ -20,9 +20,8 @@ jobs:
         id: release
         with:
           release-type: node
-          package-name: obsidian-note-calendar
           manifest-file: .release-please-manifest.json
-          config-file: release-please-config.json
+          config-file: .github/release-please-config.json
 
   release-assets:
     needs: release-please
