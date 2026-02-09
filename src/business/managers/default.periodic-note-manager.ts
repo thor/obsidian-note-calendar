@@ -29,12 +29,19 @@ export class DefaultPeriodicNoteManager implements PeriodicNoteManager {
         const fileExists = await this.doesNoteExist(settings, period);
         const templateFileExists = await fileRepository.exists(settings.templateFile);
 
-        if (!fileExists && templateFileExists) {
-            const template = await fileRepository.readContents(settings.templateFile);
-            const parsedContent = await this.parseVariables(template, period);
-
-            await fileRepository.create(filePath, parsedContent);
+        if (fileExists) {
+          return;
         }
+
+        if (!templateFileExists) {
+          throw new Error(`Could not create new note: Template "${settings.templateFile}" does not exist`);
+        }
+
+
+        const template = await fileRepository.readContents(settings.templateFile);
+        const parsedContent = await this.parseVariables(template, period);
+
+        await fileRepository.create(filePath, parsedContent);
     }
 
     public async openNote(settings: PeriodNoteSettings, period: Period): Promise<void> {

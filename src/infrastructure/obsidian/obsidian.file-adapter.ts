@@ -23,6 +23,7 @@ export class ObsidianFileAdapter implements FileAdapter {
     }
 
     public async createFolder(folder: string): Promise<void> {
+        // TODO: determine where it's called and ensure that folder defaults to "/"
         const file = this.plugin.app.vault.getAbstractFileByPath(folder);
 
         if (file && file instanceof TFolder) {
