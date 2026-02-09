@@ -1,0 +1,39 @@
+name: Update versions.json
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  update-versions:
+    if: startsWith(github.head_ref, 'release-please--')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+
+      - name: Update versions.json
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          # Set npm_package_version env var for the script
+          export npm_package_version="$VERSION"
+          node version-bump.mjs
+          
+          # Check for changes
+          if [[ -n $(git status -s versions.json) ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add versions.json manifest.json
+            git commit -m "chore: update versions.json and manifest.json"
+            git push
+          fi

@@ -1,0 +1,52 @@
+name: release-please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          release-type: node
+          package-name: obsidian-note-calendar
+          manifest-file: .release-please-manifest.json
+          config-file: release-please-config.json
+
+  release-assets:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+            ref: ${{ needs.release-please.outputs.tag_name }}
+
+      - name: Install node
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
+
+      - name: Build plugin
+        run: |
+          npm install
+          npm run build
+
+      - name: Upload Release Assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${{ needs.release-please.outputs.tag_name }}" main.js manifest.json styles.css --clobber
