@@ -1,10 +1,10 @@
 {
-	"id": "daily-note-calendar",
-	"name": "Daily notes calendar",
+	"id": "notes-calendar",
+	"name": "Notes calendar",
 	"version": "2.6.1",
 	"minAppVersion": "0.15.0",
 	"description": "Navigate your Obsidian Vault using a calendar view.",
-	"author": "bartkessels",
-	"authorUrl": "https://bartkessels.net",
+	"author": "bartkessels & Contributors",
+	"authorUrl": "https://github.com/thor/obsidian-note-calendar",
 	"isDesktopOnly": false
 }
