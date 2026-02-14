@@ -1,0 +1,12 @@
+[tools]
+node = "24.13.1"
+
+[tasks.install]
+alias = "i"
+description = "Install npm dependencies"
+run = "npm install"
+
+[tasks.build]
+alias = "b"
+description = "Build the package"
+run = "npm run build"
