@@ -74,8 +74,8 @@ export default class DailyNoteCalendarPlugin extends Plugin {
             this,
             this.dependencies.dateParserFactory,
             this.dependencies.settingsRepositoryFactory,
-            () => {
-                // TODO: Handle the settings change
+            async () => {
+                await this.initializePlugin();
             }
         );
         this.addSettingTab(settingsTab);
