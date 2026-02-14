@@ -11,5 +11,12 @@
         }
       ]
     }
-  }
+  },
+  "extra-files": [
+    {
+      "type": "json",
+      "path": "manifest.json",
+      "jsonpath": "$.version"
+    }
+  ]
 }
