@@ -24,6 +24,7 @@ jobs:
           release-type: node
           manifest-file: .release-please-manifest.json
           config-file: .github/release-please-config.json
+          target-branch: release/test
 
   release-assets:
     needs: release-please
